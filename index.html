@@ -375,7 +375,6 @@ let isLoading = false;
 // Show saved key state on load
 window.onload = () => {
   if (apiKey) {
-    document.getElementById('apiKeyInput').value = apiKey;
     document.getElementById('keyStatus').innerHTML = '<div class="key-saved">✅ API Key tersimpan — chatbot siap digunakan!</div>';
   }
 };
