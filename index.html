@@ -6,116 +6,152 @@
 <title>PJU Smart Assistant - AI Chatbot</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f0f4f8; min-height: 100vh; padding: 1.5rem; }
+
+  :root {
+    --bg:#f0f4f8; --bg2:#fff; --bg3:#f4f6f8; --border:#eee; --border2:#ddd;
+    --text:#1a1a1a; --text2:#888; --text3:#444;
+    --bubble:#f4f6f8; --card-sh:rgba(0,0,0,.07);
+    --tab-bg:#fff; --qbtn-bg:#fff; --qbtn-c:#444;
+    --about-bg:#fff; --tech-bg:#f7faf8; --tech-bd:#d4ede4;
+    --code-bg:#f1f5f9; --setup-bg:#fffbe6; --setup-bd:#f0c040; --setup-c:#5a4000;
+    --input-bg:#fff;
+  }
+  body.dark {
+    --bg:#0f172a; --bg2:#1e293b; --bg3:#334155; --border:#334155; --border2:#475569;
+    --text:#e2e8f0; --text2:#94a3b8; --text3:#cbd5e1;
+    --bubble:#1e293b; --card-sh:rgba(0,0,0,.35);
+    --tab-bg:#1e293b; --qbtn-bg:#1e293b; --qbtn-c:#94a3b8;
+    --about-bg:#1e293b; --tech-bg:#0f2318; --tech-bd:#1d6b45;
+    --code-bg:#0f172a; --setup-bg:#1a1500; --setup-bd:#a07800; --setup-c:#fde68a;
+    --input-bg:#1e293b;
+  }
+  body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; background:var(--bg); min-height:100vh; padding:1.5rem; transition:background .2s,color .2s; color:var(--text); }
 
   /* HERO */
-  .hero { background: linear-gradient(135deg, #0F6E56 0%, #1D9E75 50%, #0C447C 100%); border-radius: 16px; padding: 2rem; color: white; max-width: 860px; margin: 0 auto 1.25rem; position: relative; overflow: hidden; }
-  .hero::after { content: ''; position: absolute; top: -50px; right: -50px; width: 180px; height: 180px; border-radius: 50%; background: rgba(255,255,255,0.06); pointer-events: none; }
-  .hero-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25); border-radius: 100px; padding: 4px 14px; font-size: 12px; margin-bottom: 0.9rem; }
-  .hero h1 { font-size: 22px; font-weight: 600; margin-bottom: 0.4rem; }
-  .hero p { font-size: 14px; opacity: 0.82; line-height: 1.6; max-width: 520px; }
-  .hero-stats { display: flex; gap: 1.8rem; margin-top: 1.4rem; flex-wrap: wrap; }
-  .stat-val { font-size: 20px; font-weight: 600; }
-  .stat-lbl { font-size: 11px; opacity: 0.6; text-transform: uppercase; letter-spacing: 0.5px; }
+  .hero { background:linear-gradient(135deg,#0F6E56 0%,#1D9E75 50%,#0C447C 100%); border-radius:16px; padding:2rem; color:#fff; max-width:860px; margin:0 auto 1.25rem; position:relative; overflow:hidden; }
+  .hero::after { content:''; position:absolute; top:-50px; right:-50px; width:180px; height:180px; border-radius:50%; background:rgba(255,255,255,.06); pointer-events:none; }
+  .hero-top { display:flex; align-items:flex-start; justify-content:space-between; }
+  .hero-badge { display:inline-flex; align-items:center; gap:6px; background:rgba(255,255,255,.15); border:1px solid rgba(255,255,255,.25); border-radius:100px; padding:4px 14px; font-size:12px; margin-bottom:.9rem; }
+  .hero h1 { font-size:22px; font-weight:600; margin-bottom:.4rem; }
+  .hero p { font-size:14px; opacity:.82; line-height:1.6; max-width:520px; }
+  .hero-stats { display:flex; gap:1.8rem; margin-top:1.4rem; flex-wrap:wrap; }
+  .stat-val { font-size:20px; font-weight:600; }
+  .stat-lbl { font-size:11px; opacity:.6; text-transform:uppercase; letter-spacing:.5px; }
+
+  /* DARK MODE TOGGLE */
+  .dm-toggle { background:rgba(255,255,255,.15); border:1px solid rgba(255,255,255,.3); border-radius:100px; padding:5px 12px; font-size:13px; color:#fff; cursor:pointer; white-space:nowrap; flex-shrink:0; transition:background .15s; }
+  .dm-toggle:hover { background:rgba(255,255,255,.25); }
 
   /* INFO CARDS */
-  .info-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; max-width: 860px; margin: 0 auto 1.25rem; }
-  .info-card { background: white; border-radius: 12px; padding: 0.85rem 1rem; display: flex; align-items: flex-start; gap: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.07); }
-  .info-icon { width: 34px; height: 34px; border-radius: 8px; background: #E1F5EE; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 17px; }
-  .info-card h3 { font-size: 11px; color: #888; font-weight: 400; margin-bottom: 3px; }
-  .info-card p { font-size: 13px; color: #1a1a1a; font-weight: 500; line-height: 1.4; }
+  .info-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:10px; max-width:860px; margin:0 auto 1.25rem; }
+  .info-card { background:var(--bg2); border-radius:12px; padding:.85rem 1rem; display:flex; align-items:flex-start; gap:10px; box-shadow:0 1px 3px var(--card-sh); }
+  .info-icon { width:34px; height:34px; border-radius:8px; background:#E1F5EE; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:17px; }
+  .info-card h3 { font-size:11px; color:var(--text2); font-weight:400; margin-bottom:3px; }
+  .info-card p { font-size:13px; color:var(--text); font-weight:500; line-height:1.4; }
 
   /* TABS */
-  .tab-bar { max-width: 860px; margin: 0 auto 1.25rem; display: flex; gap: 6px; background: white; border-radius: 12px; padding: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.07); }
-  .tab-btn { flex: 1; padding: 0.55rem 0.5rem; border: none; border-radius: 8px; font-size: 13px; font-family: inherit; cursor: pointer; background: transparent; color: #666; font-weight: 500; transition: all 0.15s; }
-  .tab-btn.active { background: #0F6E56; color: white; }
-  .tab-btn:hover:not(.active) { background: #f0f4f8; color: #333; }
-  .tab-panel { display: none; }
-  .tab-panel.active { display: block; }
+  .tab-bar { max-width:860px; margin:0 auto 1.25rem; display:flex; gap:6px; background:var(--tab-bg); border-radius:12px; padding:6px; box-shadow:0 1px 3px var(--card-sh); }
+  .tab-btn { flex:1; padding:.55rem .5rem; border:none; border-radius:8px; font-size:13px; font-family:inherit; cursor:pointer; background:transparent; color:var(--text2); font-weight:500; transition:all .15s; }
+  .tab-btn.active { background:#0F6E56; color:#fff; }
+  .tab-btn:hover:not(.active) { background:var(--bg3); color:var(--text); }
+  .tab-panel { display:none; }
+  .tab-panel.active { display:block; }
 
-  /* API KEY SETUP */
-  .setup-box { background: #fffbe6; border: 1px solid #f0c040; border-radius: 12px; padding: 1rem 1.25rem; max-width: 860px; margin: 0 auto 1.25rem; display: flex; gap: 10px; align-items: flex-start; }
-  .setup-box .icon { font-size: 20px; flex-shrink: 0; margin-top: 2px; }
-  .setup-box p { font-size: 13px; line-height: 1.6; color: #5a4000; margin-bottom: 8px; }
-  .setup-box a { color: #0C447C; }
-  .key-row { display: flex; gap: 8px; }
-  #apiKeyInput { flex: 1; border: 1px solid #d0b840; border-radius: 8px; padding: 0.5rem 0.8rem; font-size: 13px; font-family: monospace; outline: none; }
-  #apiKeyInput:focus { border-color: #0F6E56; }
-  #saveKeyBtn { padding: 0.5rem 1rem; border-radius: 8px; border: none; background: #0F6E56; color: white; font-size: 13px; cursor: pointer; font-family: inherit; }
-  #saveKeyBtn:hover { background: #085041; }
-  .key-saved { font-size: 12px; color: #0F6E56; font-weight: 500; margin-top: 4px; }
+  /* API KEY */
+  .setup-box { background:var(--setup-bg); border:1px solid var(--setup-bd); border-radius:12px; padding:1rem 1.25rem; max-width:860px; margin:0 auto 1.25rem; display:flex; gap:10px; align-items:flex-start; }
+  .setup-box .icon { font-size:20px; flex-shrink:0; margin-top:2px; }
+  .setup-box p { font-size:13px; line-height:1.6; color:var(--setup-c); margin-bottom:8px; }
+  .setup-box a { color:#0C447C; }
+  .key-row { display:flex; gap:8px; }
+  #saveKeyBtn { padding:.5rem 1rem; border-radius:8px; border:none; background:#0F6E56; color:#fff; font-size:13px; cursor:pointer; font-family:inherit; }
+  #saveKeyBtn:hover { background:#085041; }
+  .key-saved { font-size:12px; color:#0F6E56; font-weight:500; margin-top:4px; }
 
   /* CHAT BOX */
-  .chat-wrap { max-width: 860px; margin: 0 auto; background: white; border-radius: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); overflow: hidden; }
-  .chat-header { padding: 0.9rem 1.25rem; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 10px; }
-  .bot-avatar { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #0F6E56, #0C447C); display: flex; align-items: center; justify-content: center; color: white; font-size: 18px; flex-shrink: 0; }
-  .chat-header-info h2 { font-size: 14px; font-weight: 600; }
-  .chat-header-info p { font-size: 12px; color: #888; }
-  .online-dot { width: 8px; height: 8px; background: #1D9E75; border-radius: 50%; margin-left: auto; box-shadow: 0 0 0 2px rgba(29,158,117,0.25); }
+  .chat-wrap { max-width:860px; margin:0 auto; background:var(--bg2); border-radius:16px; box-shadow:0 2px 12px var(--card-sh); overflow:hidden; }
+  .chat-header { padding:.9rem 1.25rem; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:10px; }
+  .bot-avatar { width:36px; height:36px; border-radius:50%; background:linear-gradient(135deg,#0F6E56,#0C447C); display:flex; align-items:center; justify-content:center; color:#fff; font-size:18px; flex-shrink:0; }
+  .chat-header-info h2 { font-size:14px; font-weight:600; color:var(--text); }
+  .chat-header-info p { font-size:12px; color:var(--text2); }
+  .online-dot { width:8px; height:8px; background:#1D9E75; border-radius:50%; margin-left:auto; box-shadow:0 0 0 2px rgba(29,158,117,.25); }
 
-  /* CHAT TOOLBAR */
-  .chat-toolbar { padding: 0.45rem 1.25rem 0; display: flex; justify-content: space-between; align-items: center; }
-  .history-badge { font-size: 10px; color: #0F6E56; background: #E1F5EE; border-radius: 100px; padding: 2px 9px; font-weight: 500; }
-  .clear-btn { font-size: 11px; color: #bbb; background: none; border: none; cursor: pointer; font-family: inherit; padding: 2px 8px; border-radius: 6px; transition: all 0.15s; }
-  .clear-btn:hover { color: #c00; background: #fff0f0; }
+  /* TOOLBAR */
+  .chat-toolbar { padding:.45rem 1.25rem 0; display:flex; justify-content:space-between; align-items:center; }
+  .history-badge { font-size:10px; color:#0F6E56; background:#E1F5EE; border-radius:100px; padding:2px 9px; font-weight:500; }
+  .clear-btn { font-size:11px; color:var(--text2); background:none; border:none; cursor:pointer; font-family:inherit; padding:2px 8px; border-radius:6px; transition:all .15s; }
+  .clear-btn:hover { color:#c00; background:#fff0f0; }
+  .export-btn { font-size:11px; color:#0F6E56; background:none; border:1px solid #0F6E56; cursor:pointer; font-family:inherit; padding:2px 10px; border-radius:6px; transition:all .15s; }
+  .export-btn:hover { background:#E1F5EE; }
+  .toolbar-right { display:flex; gap:6px; align-items:center; }
 
   /* MESSAGES */
-  #messages { padding: 1.25rem; min-height: 320px; max-height: 420px; overflow-y: auto; display: flex; flex-direction: column; gap: 1rem; scroll-behavior: smooth; }
-  .msg { display: flex; gap: 8px; align-items: flex-start; }
-  .msg.user { flex-direction: row-reverse; }
-  .msg-av { width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, #0F6E56, #0C447C); display: flex; align-items: center; justify-content: center; color: white; font-size: 13px; flex-shrink: 0; }
-  .msg.user .msg-av { background: #d1e8ff; color: #0C447C; }
-  .bubble { max-width: 78%; padding: 0.65rem 0.95rem; border-radius: 12px; font-size: 14px; line-height: 1.65; background: #f4f6f8; color: #1a1a1a; }
-  .msg.user .bubble { background: #0F6E56; color: white; border-radius: 12px 12px 4px 12px; }
-  .msg:not(.user) .bubble { border-radius: 4px 12px 12px 12px; }
-  .history-divider { font-size: 11px; color: #ccc; text-align: center; padding: 2px 0 4px; font-style: italic; }
+  #messages { padding:1.25rem; min-height:320px; max-height:420px; overflow-y:auto; display:flex; flex-direction:column; gap:1rem; scroll-behavior:smooth; }
+  .msg { display:flex; gap:8px; align-items:flex-start; }
+  .msg.user { flex-direction:row-reverse; }
+  .msg-av { width:28px; height:28px; border-radius:50%; background:linear-gradient(135deg,#0F6E56,#0C447C); display:flex; align-items:center; justify-content:center; color:#fff; font-size:13px; flex-shrink:0; }
+  .msg.user .msg-av { background:#d1e8ff; color:#0C447C; }
+  .bubble { max-width:78%; padding:.65rem .95rem; border-radius:12px; font-size:14px; line-height:1.65; background:var(--bubble); color:var(--text); }
+  .msg.user .bubble { background:#0F6E56; color:#fff; border-radius:12px 12px 4px 12px; }
+  .msg:not(.user) .bubble { border-radius:4px 12px 12px 12px; }
+  .history-divider { font-size:11px; color:var(--text2); text-align:center; padding:2px 0 4px; font-style:italic; }
+
+  /* FEEDBACK */
+  .feedback-row { display:flex; gap:6px; margin-top:6px; align-items:center; }
+  .fb-btn { background:none; border:1px solid var(--border2); border-radius:100px; padding:2px 9px; font-size:12px; cursor:pointer; color:var(--text2); transition:all .15s; font-family:inherit; }
+  .fb-btn:hover { border-color:#0F6E56; color:#0F6E56; background:rgba(15,110,86,.06); }
+  .fb-btn.voted { border-color:#0F6E56; background:#E1F5EE; color:#0F6E56; cursor:default; }
+  .fb-btn.voted-no { border-color:#dc2626; background:#fff0f0; color:#dc2626; cursor:default; }
+  .fb-label { font-size:11px; color:var(--text2); }
 
   /* TYPING */
-  .typing-dots { display: flex; gap: 4px; align-items: center; padding: 4px 0; }
-  .typing-dots span { width: 7px; height: 7px; background: #aaa; border-radius: 50%; animation: blink 1.2s infinite; }
-  .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
-  .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
-  @keyframes blink { 0%,60%,100% { transform: translateY(0); opacity:.4; } 30% { transform: translateY(-5px); opacity:1; } }
+  .typing-dots { display:flex; gap:4px; align-items:center; padding:4px 0; }
+  .typing-dots span { width:7px; height:7px; background:#aaa; border-radius:50%; animation:blink 1.2s infinite; }
+  .typing-dots span:nth-child(2) { animation-delay:.2s; }
+  .typing-dots span:nth-child(3) { animation-delay:.4s; }
+  @keyframes blink { 0%,60%,100%{transform:translateY(0);opacity:.4;} 30%{transform:translateY(-5px);opacity:1;} }
 
-  /* QUICK BUTTONS */
-  .quick-area { padding: 0.5rem 1.25rem 0.75rem; display: flex; flex-wrap: wrap; gap: 6px; }
-  .qbtn { font-size: 12px; padding: 5px 12px; border-radius: 100px; border: 1px solid #d0d0d0; background: white; color: #444; cursor: pointer; transition: all 0.15s; font-family: inherit; }
-  .qbtn:hover { background: #f0f4f8; border-color: #0F6E56; color: #0F6E56; }
+  /* QUICK */
+  .quick-area { padding:.5rem 1.25rem .75rem; display:flex; flex-wrap:wrap; gap:6px; }
+  .qbtn { font-size:12px; padding:5px 12px; border-radius:100px; border:1px solid var(--border2); background:var(--qbtn-bg); color:var(--qbtn-c); cursor:pointer; transition:all .15s; font-family:inherit; }
+  .qbtn:hover { background:var(--bg3); border-color:#0F6E56; color:#0F6E56; }
 
   /* INPUT */
-  .input-row { padding: 0.75rem 1.25rem 1.1rem; border-top: 1px solid #eee; display: flex; gap: 8px; align-items: flex-end; }
-  #userInput { flex: 1; border: 1px solid #ddd; border-radius: 10px; padding: 0.6rem 0.9rem; font-size: 14px; font-family: inherit; resize: none; min-height: 42px; max-height: 110px; outline: none; transition: border-color 0.15s; line-height: 1.5; color: #1a1a1a; }
-  #userInput:focus { border-color: #0F6E56; }
-  #sendBtn { width: 40px; height: 40px; border-radius: 10px; border: none; background: #0F6E56; color: white; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; transition: background 0.15s, transform 0.1s; flex-shrink: 0; }
-  #sendBtn:hover { background: #085041; }
-  #sendBtn:active { transform: scale(0.95); }
-  #sendBtn:disabled { background: #ccc; cursor: not-allowed; }
+  .input-row { padding:.75rem 1.25rem 1.1rem; border-top:1px solid var(--border); display:flex; gap:8px; align-items:flex-end; }
+  #userInput { flex:1; border:1px solid var(--border2); border-radius:10px; padding:.6rem .9rem; font-size:14px; font-family:inherit; resize:none; min-height:42px; max-height:110px; outline:none; transition:border-color .15s; line-height:1.5; color:var(--text); background:var(--input-bg); }
+  #userInput:focus { border-color:#0F6E56; }
+  #sendBtn { width:40px; height:40px; border-radius:10px; border:none; background:#0F6E56; color:#fff; cursor:pointer; font-size:18px; display:flex; align-items:center; justify-content:center; transition:background .15s,transform .1s; flex-shrink:0; }
+  #sendBtn:hover { background:#085041; }
+  #sendBtn:active { transform:scale(.95); }
+  #sendBtn:disabled { background:#ccc; cursor:not-allowed; }
 
-  /* ABOUT PAGE */
-  .about-wrap { max-width: 860px; margin: 0 auto; }
-  .about-section { background: white; border-radius: 16px; padding: 1.4rem 1.5rem; margin-bottom: 1rem; box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
-  .about-section h2 { font-size: 15px; color: #0F6E56; margin-bottom: 0.85rem; display: flex; align-items: center; gap: 8px; font-weight: 600; }
-  .about-section p, .about-section li { font-size: 13.5px; color: #444; line-height: 1.75; }
-  .about-section ul { padding-left: 1.3rem; }
-  .about-section li { margin-bottom: 3px; }
-  .tech-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin-top: 0.75rem; }
-  .tech-card { background: #f7faf8; border: 1px solid #d4ede4; border-radius: 10px; padding: 0.7rem 1rem; }
-  .tc-label { font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px; }
-  .tc-val { font-size: 13px; color: #1a1a1a; font-weight: 500; }
-  .flow-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-top: 0.75rem; }
-  .flow-node { background: #f0f4f8; border-radius: 8px; padding: 6px 14px; font-size: 12px; color: #333; }
-  .flow-node.hl { background: #0F6E56; color: white; }
-  .flow-arrow { color: #bbb; font-size: 14px; }
-  .disclaimer-box { background: #fffbe6; border: 1px solid #f0c040; border-radius: 10px; padding: 0.85rem 1rem; font-size: 12.5px; color: #5a4000; line-height: 1.65; margin-top: 0.75rem; }
+  /* ABOUT */
+  .about-wrap { max-width:860px; margin:0 auto; }
+  .about-section { background:var(--about-bg); border-radius:16px; padding:1.4rem 1.5rem; margin-bottom:1rem; box-shadow:0 1px 4px var(--card-sh); }
+  .about-section h2 { font-size:15px; color:#0F6E56; margin-bottom:.85rem; display:flex; align-items:center; gap:8px; font-weight:600; }
+  .about-section p, .about-section li { font-size:13.5px; color:var(--text3); line-height:1.75; }
+  .about-section ul { padding-left:1.3rem; }
+  .about-section li { margin-bottom:3px; }
+  .tech-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:10px; margin-top:.75rem; }
+  .tech-card { background:var(--tech-bg); border:1px solid var(--tech-bd); border-radius:10px; padding:.7rem 1rem; }
+  .tc-label { font-size:10px; color:var(--text2); text-transform:uppercase; letter-spacing:.5px; margin-bottom:3px; }
+  .tc-val { font-size:13px; color:var(--text); font-weight:500; }
+  .flow-row { display:flex; align-items:center; gap:6px; flex-wrap:wrap; margin-top:.75rem; }
+  .flow-node { background:var(--bg3); border-radius:8px; padding:6px 14px; font-size:12px; color:var(--text); }
+  .flow-node.hl { background:#0F6E56; color:#fff; }
+  .flow-arrow { color:var(--text2); font-size:14px; }
+  .disclaimer-box { background:var(--setup-bg); border:1px solid var(--setup-bd); border-radius:10px; padding:.85rem 1rem; font-size:12.5px; color:var(--setup-c); line-height:1.65; margin-top:.75rem; }
 
-  .footer-note { font-size: 11px; color: #bbb; text-align: center; margin-top: 1rem; max-width: 860px; margin-left: auto; margin-right: auto; line-height: 1.5; }
+  .footer-note { font-size:11px; color:var(--text2); text-align:center; margin-top:1rem; max-width:860px; margin-left:auto; margin-right:auto; line-height:1.5; }
 </style>
 </head>
 <body>
 
 <!-- HERO -->
 <div class="hero">
-  <div class="hero-badge">💡 Bidang Penerangan Jalan &amp; Sarana Umum</div>
+  <div class="hero-top">
+    <div class="hero-badge">💡 Bidang Penerangan Jalan &amp; Sarana Umum</div>
+    <button class="dm-toggle" onclick="toggleDark()" id="dmBtn">🌙 Dark</button>
+  </div>
   <h1>PJU Smart Assistant</h1>
   <p>Asisten AI untuk layanan informasi Penerangan Jalan Umum — Dinas Bina Marga Provinsi DKI Jakarta</p>
   <div class="hero-stats">
@@ -133,28 +169,15 @@
   <div class="info-card"><div class="info-icon">💻</div><div><h3>Teknologi</h3><p>Smart Lighting System</p></div></div>
 </div>
 
-<!-- API KEY SETUP -->
-<div class="setup-box" id="setupBox">
-  <div class="icon">🔑</div>
-  <div style="flex:1">
-    <p><strong>Setup API Key</strong><br>
-    Masukkan Anthropic API Key untuk menghidupkan chatbot. Dapatkan key di <a href="https://console.anthropic.com/" target="_blank">console.anthropic.com</a> → API Keys.<br>
-    Key hanya tersimpan di browser lokal, tidak dikirim ke server lain.</p>
-    <div class="key-row">
-      <input type="password" id="apiKeyInput" placeholder="sk-ant-api03-..." />
-      <button id="saveKeyBtn" onclick="saveKey()">Simpan</button>
-    </div>
-    <div id="keyStatus"></div>
-  </div>
-</div>
+<!-- API KEY SETUP DIHAPUS — key dikelola di Cloudflare Worker -->
 
-<!-- TAB BAR -->
+<!-- TABS -->
 <div class="tab-bar">
-  <button class="tab-btn active" onclick="switchTab('chat', this)">💬 Chat</button>
-  <button class="tab-btn" onclick="switchTab('about', this)">ℹ️ Tentang Sistem</button>
+  <button class="tab-btn active" onclick="switchTab('chat',this)">💬 Chat</button>
+  <button class="tab-btn" onclick="switchTab('about',this)">ℹ️ Tentang Sistem</button>
 </div>
 
-<!-- TAB: CHAT -->
+<!-- TAB CHAT -->
 <div class="tab-panel active" id="tab-chat">
   <div class="chat-wrap">
     <div class="chat-header">
@@ -163,24 +186,21 @@
         <h2>PJU Smart Assistant</h2>
         <p>Asisten informasi resmi · Berbasis Claude AI</p>
       </div>
-      <div class="online-dot" title="Online"></div>
+      <div class="online-dot"></div>
     </div>
-
     <div class="chat-toolbar">
       <span class="history-badge" id="historyBadge" style="display:none">📂 Riwayat dimuat</span>
-      <button class="clear-btn" onclick="clearHistory()">🗑 Hapus riwayat</button>
+      <div class="toolbar-right">
+        <button class="export-btn" onclick="showExportMenu()">⬇ Export</button>
+        <button class="clear-btn" onclick="clearHistory()">🗑 Hapus riwayat</button>
+      </div>
     </div>
-
     <div id="messages">
       <div class="msg">
         <div class="msg-av">🤖</div>
-        <div class="bubble">
-          Halo! Saya <strong>PJU Smart Assistant</strong>, asisten AI dari Bidang Penerangan Jalan dan Sarana Umum, Dinas Bina Marga Provinsi DKI Jakarta. 👋<br><br>
-          Saya siap membantu Anda mendapatkan informasi seputar organisasi, layanan PJU, smart lighting, dan pemeliharaan. Silakan ajukan pertanyaan Anda!
-        </div>
+        <div class="bubble">Halo! Saya <strong>PJU Smart Assistant</strong>, asisten AI dari Bidang Penerangan Jalan dan Sarana Umum, Dinas Bina Marga Provinsi DKI Jakarta. 👋<br><br>Saya siap membantu Anda mendapatkan informasi seputar organisasi, layanan PJU, smart lighting, dan pemeliharaan. Silakan ajukan pertanyaan Anda!</div>
       </div>
     </div>
-
     <div class="quick-area">
       <button class="qbtn" onclick="sendQuick('Apa itu PJU?')">Apa itu PJU?</button>
       <button class="qbtn" onclick="sendQuick('Apa itu Smart Lighting?')">Smart Lighting</button>
@@ -189,7 +209,6 @@
       <button class="qbtn" onclick="sendQuick('Bagaimana cara melaporkan lampu PJU yang mati?')">Cara lapor kerusakan</button>
       <button class="qbtn" onclick="sendQuick('Aplikasi apa saja yang digunakan untuk monitoring PJU?')">Aplikasi digital</button>
     </div>
-
     <div class="input-row">
       <textarea id="userInput" placeholder="Ketik pertanyaan tentang PJU..." rows="1"
         onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
@@ -198,85 +217,56 @@
   </div>
 </div>
 
-<!-- TAB: TENTANG SISTEM -->
+<!-- TAB TENTANG -->
 <div class="tab-panel" id="tab-about">
   <div class="about-wrap">
-
     <div class="about-section">
       <h2>🤖 Tentang PJU Smart Assistant</h2>
-      <p>PJU Smart Assistant adalah chatbot berbasis kecerdasan buatan (AI) yang dikembangkan sebagai prototipe sistem informasi layanan publik untuk Bidang Penerangan Jalan dan Sarana Umum, Dinas Bina Marga Provinsi DKI Jakarta.</p>
-      <p style="margin-top:0.6rem">Chatbot ini mampu menjawab pertanyaan seputar profil organisasi, data layanan PJU, teknologi smart lighting, proses pemeliharaan, dan cara pengaduan — secara otomatis, 24 jam.</p>
+      <p>PJU Smart Assistant adalah chatbot berbasis AI yang dikembangkan sebagai prototipe sistem informasi layanan publik untuk Bidang Penerangan Jalan dan Sarana Umum, Dinas Bina Marga Provinsi DKI Jakarta.</p>
     </div>
-
     <div class="about-section">
       <h2>⚙️ Teknologi yang Digunakan</h2>
       <div class="tech-grid">
         <div class="tech-card"><div class="tc-label">AI Model</div><div class="tc-val">Claude Sonnet 4.6</div></div>
         <div class="tech-card"><div class="tc-label">Provider</div><div class="tc-val">Anthropic API</div></div>
-        <div class="tech-card"><div class="tc-label">Frontend</div><div class="tc-val">HTML / CSS / JavaScript</div></div>
+        <div class="tech-card"><div class="tc-label">Frontend</div><div class="tc-val">HTML / CSS / JS</div></div>
         <div class="tech-card"><div class="tc-label">Hosting</div><div class="tc-val">GitHub Pages</div></div>
         <div class="tech-card"><div class="tc-label">Penyimpanan</div><div class="tc-val">Browser localStorage</div></div>
         <div class="tech-card"><div class="tc-label">Knowledge Base</div><div class="tc-val">Renstra DBM 2025–2029</div></div>
       </div>
     </div>
-
     <div class="about-section">
       <h2>🔄 Cara Kerja Sistem</h2>
-      <p>Setiap pertanyaan pengguna diproses melalui alur berikut:</p>
       <div class="flow-row">
-        <div class="flow-node">👤 Pengguna</div>
-        <div class="flow-arrow">→</div>
-        <div class="flow-node">🌐 Browser (HTML)</div>
-        <div class="flow-arrow">→</div>
-        <div class="flow-node hl">🔗 Anthropic API</div>
-        <div class="flow-arrow">→</div>
-        <div class="flow-node hl">🤖 Claude AI</div>
-        <div class="flow-arrow">→</div>
+        <div class="flow-node">👤 Pengguna</div><div class="flow-arrow">→</div>
+        <div class="flow-node">🌐 Browser</div><div class="flow-arrow">→</div>
+        <div class="flow-node hl">🔗 Anthropic API</div><div class="flow-arrow">→</div>
+        <div class="flow-node hl">🤖 Claude AI</div><div class="flow-arrow">→</div>
         <div class="flow-node">💬 Jawaban</div>
       </div>
-      <p style="margin-top:0.75rem">Setiap permintaan menyertakan <strong>System Prompt</strong> — instruksi yang mendefinisikan peran chatbot dan basis pengetahuan PJU. Claude AI merespons <em>hanya</em> berdasarkan instruksi tersebut, sehingga jawaban terbatas pada topik yang relevan.</p>
     </div>
-
     <div class="about-section">
       <h2>📚 Sumber Basis Pengetahuan</h2>
       <ul>
-        <li>Rencana Strategis (Renstra) Dinas Bina Marga Provinsi DKI Jakarta Tahun 2025–2029</li>
-        <li>Peraturan Gubernur DKI Jakarta Nomor 57 Tahun 2022 tentang Organisasi dan Tata Kerja Perangkat Daerah</li>
-        <li>Keputusan Dirjen Perhubungan Darat No. KP-DRJD 7198 Tahun 2023 (Pedoman Teknis Alat Penerangan Jalan &amp; SKEM)</li>
+        <li>Renstra Dinas Bina Marga Provinsi DKI Jakarta Tahun 2025–2029</li>
+        <li>Pergub DKI Jakarta No. 57 Tahun 2022 tentang Organisasi dan Tata Kerja Perangkat Daerah</li>
+        <li>Keputusan Dirjen Perhubungan Darat No. KP-DRJD 7198 Tahun 2023 (Pedoman Teknis PJU &amp; SKEM)</li>
       </ul>
-      <div class="disclaimer-box">
-        ⚠️ <strong>Disclaimer Akademik:</strong> Chatbot ini merupakan prototipe yang dikembangkan untuk keperluan tugas akademik (MKSK MTI UI). Basis pengetahuan yang digunakan bersumber dari dokumen resmi yang tersedia, namun tidak mencakup seluruh informasi operasional Dinas Bina Marga DKI Jakarta. Untuk informasi resmi dan terkini, silakan menghubungi kantor Dinas Bina Marga Provinsi DKI Jakarta secara langsung.
-      </div>
+      <div class="disclaimer-box">⚠️ <strong>Disclaimer:</strong> Prototipe untuk keperluan akademik (MTI UI). Untuk informasi resmi, hubungi Dinas Bina Marga Provinsi DKI Jakarta secara langsung.</div>
     </div>
-
     <div class="about-section">
       <h2>💡 Kemampuan &amp; Batasan</h2>
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
         <div>
-          <p style="font-weight:600; color:#0F6E56; margin-bottom:6px;">✅ Dapat menjawab:</p>
-          <ul>
-            <li>Profil &amp; struktur organisasi</li>
-            <li>Visi, misi, dan tujuan DBM</li>
-            <li>Data &amp; cakupan layanan PJU</li>
-            <li>Teknologi Smart Lighting</li>
-            <li>Proses pemeliharaan PJU</li>
-            <li>Aplikasi digital monitoring</li>
-            <li>Cara pengaduan kerusakan</li>
-          </ul>
+          <p style="font-weight:600;color:#0F6E56;margin-bottom:6px">✅ Dapat menjawab:</p>
+          <ul><li>Profil &amp; struktur organisasi</li><li>Visi, misi DBM</li><li>Data &amp; cakupan PJU</li><li>Smart Lighting &amp; SKEM</li><li>Proses pemeliharaan</li><li>Aplikasi digital monitoring</li><li>Cara pengaduan kerusakan</li></ul>
         </div>
         <div>
-          <p style="font-weight:600; color:#c00; margin-bottom:6px;">🚫 Di luar cakupan:</p>
-          <ul>
-            <li>Data operasional real-time</li>
-            <li>Status pengaduan spesifik</li>
-            <li>Informasi anggaran detail</li>
-            <li>Nama pegawai individu</li>
-            <li>Topik di luar PJU/DBM</li>
-          </ul>
+          <p style="font-weight:600;color:#c00;margin-bottom:6px">🚫 Di luar cakupan:</p>
+          <ul><li>Data real-time lampu</li><li>Status pengaduan spesifik</li><li>Nama pegawai individu</li><li>Topik di luar PJU/DBM</li></ul>
         </div>
       </div>
     </div>
-
   </div>
 </div>
 
@@ -296,100 +286,77 @@ ATURAN UTAMA:
 
 --- PROFIL ORGANISASI ---
 Nama Instansi: Dinas Bina Marga Provinsi DKI Jakarta
-Bidang terkait PJU: Bidang Penerangan Jalan dan Sarana Umum (salah satu bidang dalam Dinas Bina Marga)
-Dasar hukum: Peraturan Gubernur DKI Jakarta Nomor 57 Tahun 2022 tentang Organisasi dan Tata Kerja Perangkat Daerah
-Jumlah ASN Bidang Penerangan Jalan dan Sarana Umum: 22 pegawai (16 laki-laki, 6 perempuan)
+Bidang terkait PJU: Bidang Penerangan Jalan dan Sarana Umum
+Dasar hukum: Peraturan Gubernur DKI Jakarta Nomor 57 Tahun 2022
+Jumlah ASN Bidang PJU: 22 pegawai (16 laki-laki, 6 perempuan)
+Unit di bawah Dinas Bina Marga: Kepala Dinas (1), Sekretariat (38), Bidang Jalan dan Jembatan (29), Bidang Prasarana dan Sarana Utilitas Kota (22), Bidang Kelengkapan Jalan (22), Bidang Penerangan Jalan dan Sarana Umum (22), Unit Pengadaan Tanah (15), Pusat Data dan Informasi (11), Unit Peralatan dan Perbekalan (18), Unit Penyelidikan dan Pengujian (18), plus Suku Dinas di 5 wilayah.
 
-Unit di bawah Dinas Bina Marga:
-1. Kepala Dinas (1 pegawai)
-2. Sekretariat (38 pegawai)
-3. Bidang Jalan dan Jembatan (29 pegawai)
-4. Bidang Prasarana dan Sarana Utilitas Kota (22 pegawai)
-5. Bidang Kelengkapan Jalan (22 pegawai)
-6. Bidang Penerangan Jalan dan Sarana Umum (22 pegawai)
-7. Unit Pengadaan Tanah Bina Marga (15 pegawai)
-8. Pusat Data dan Informasi Bina Marga (11 pegawai)
-9. Unit Peralatan dan Perbekalan Bina Marga (18 pegawai)
-10. Unit Pengelola Penyelidikan, Pengujian dan Pengukuran (18 pegawai)
-Ditambah Suku Dinas Bina Marga di 5 wilayah kota administrasi.
-
---- VISI & MISI DINAS BINA MARGA 2025-2029 ---
+--- VISI & MISI 2025-2029 ---
 VISI: "Mewujudkan Infrastruktur Jalan yang Inklusif dan Berkelanjutan di DKI Jakarta"
+MISI: 1) Meningkatkan konektivitas jaringan jalan; 2) Memelihara dan meningkatkan kualitas infrastruktur; 3) Menata fasilitas pejalan kaki yang aman dan inklusif; 4) Mengelola jaringan utilitas perkotaan secara terpadu; 5) Mengoptimalkan penerangan jalan untuk keamanan dan estetika kota; 6) Memelihara infrastruktur berbasis teknologi.
 
-MISI:
-1. Meningkatkan konektivitas jaringan jalan
-2. Memelihara dan meningkatkan kualitas infrastruktur untuk kenyamanan dan keselamatan pengguna jalan
-3. Menata dan mengembangkan fasilitas pejalan kaki yang aman, nyaman, dan inklusif
-4. Menata dan mengelola jaringan utilitas perkotaan secara terpadu
-5. Mengoptimalkan penerangan jalan prasarana dan sarana umum guna mewujudkan keamanan dan estetika kota
-6. Memelihara infrastruktur kota berbasis teknologi
-
---- DATA & CAKUPAN LAYANAN PJU ---
-Jumlah titik PJU yang dikelola: ±165.251 titik lampu
-Jenis jalan yang dicakupi: Jalan Arteri, Kolektor, Lokal, dan Lingkungan
-Panjang jalan provinsi yang dikelola: ±6.505 km
-Cakupan wilayah: 5 kota administrasi (Jakarta Pusat, Jakarta Utara, Jakarta Barat, Jakarta Selatan, Jakarta Timur). Kabupaten Kepulauan Seribu tidak termasuk.
+--- DATA LAYANAN PJU ---
+Jumlah titik PJU: ±165.251 titik lampu
+Jenis jalan: Arteri, Kolektor, Lokal, dan Lingkungan
+Panjang jalan provinsi: ±6.505 km
+Cakupan: 5 kota administrasi (Jakarta Pusat, Utara, Barat, Selatan, Timur). Kepulauan Seribu tidak termasuk.
 
 --- APA ITU PJU ---
-PJU (Penerangan Jalan Umum) adalah infrastruktur pendukung yang berperan strategis dalam meningkatkan keselamatan, kenyamanan, dan kualitas mobilitas masyarakat pada area jalan maupun area pejalan kaki, khususnya pada malam hari. PJU dirancang memastikan distribusi cahaya merata dan menghindari area gelap yang berpotensi membahayakan pengguna jalan.
+PJU (Penerangan Jalan Umum) adalah infrastruktur pendukung yang berperan strategis dalam meningkatkan keselamatan, kenyamanan, dan kualitas mobilitas masyarakat pada area jalan dan pejalan kaki, khususnya pada malam hari.
 
---- TEKNOLOGI SMART LIGHTING ---
-Prioritas PJU DKI Jakarta menggunakan lampu hemat energi berbasis teknologi Smart System.
-- Smart System: metode kontrol alat penerangan jalan secara terpusat melalui peralatan teknologi sistem komunikasi untuk mengetahui kinerja dan masalah pengoperasian.
-- Standar efikasi minimum: 120 lumen/watt (sesuai Keputusan Dirjen Perhubungan Darat No. KP-DRJD 7198 Tahun 2023 tentang Pedoman Teknis Alat Penerangan Jalan dan SKEM).
-- Manfaat smart lighting: pemantauan jarak jauh, pengendalian intensitas cahaya, efisiensi energi, dan kemudahan pemeliharaan.
-- Contoh implementasi: revitalisasi penerangan Jembatan Semanggi dengan konsep artistik menggunakan LED hemat energi dan sistem pengendalian pintar.
+--- SMART LIGHTING ---
+Smart System: kontrol PJU terpusat via teknologi komunikasi untuk monitoring kinerja dan masalah operasional.
+Standar efikasi minimum: 120 lumen/watt (KP-DRJD 7198 Tahun 2023).
+Manfaat: pemantauan jarak jauh, pengendalian intensitas cahaya, efisiensi energi, kemudahan pemeliharaan.
+Contoh: revitalisasi Jembatan Semanggi dengan LED hemat energi dan sistem pengendalian pintar.
 
---- PEMELIHARAAN PJU ---
-Kegiatan pemeliharaan dan pembangunan PJU meliputi:
-- Pemasangan lampu hemat energi sesuai Standar Kinerja Energi Minimum (SKEM)
-- Revitalisasi dan beautifikasi penerangan jalan sebagai bagian keindahan kota
-- Penggantian lampu dengan teknologi modern hemat energi
-- Penataan ulang titik-titik lampu agar lebih rapi
-- Integrasi desain artistik selaras dengan wajah kota metropolitan
-- Pengujian lampu PJU (direncanakan penuh pada tahun 2027)
+--- PEMELIHARAAN ---
+Pemasangan lampu hemat energi (SKEM), revitalisasi dan beautifikasi, penggantian lampu modern, penataan ulang titik lampu, integrasi desain artistik, pengujian PJU (direncanakan penuh 2027).
 
---- APLIKASI & SISTEM DIGITAL PJU ---
-1. SINGLE DASHBOARD: Monitoring dan pengelolaan lampu PJU di seluruh Provinsi DKI Jakarta.
-2. MONJAR (Monitoring Jaringan): Mendukung monitoring jaringan PJU secara digital, menggantikan pencatatan manual melalui kartu kendali panel.
-3. APLIKASI TAGIHAN LISTRIK PJU: Monitoring tagihan listrik PJU di seluruh DKI Jakarta.
-4. SIMANIS: Sistem permohonan Rekomendasi Izin Pelaksanaan Penempatan Jaringan Utilitas (IPPJU).
-5. JAKI & CRM: Sistem pengaduan digital terintegrasi untuk laporan masyarakat terkait PJU.
+--- APLIKASI DIGITAL ---
+1. SINGLE DASHBOARD: monitoring dan pengelolaan lampu PJU seluruh DKI.
+2. MONJAR: monitoring jaringan PJU digital, menggantikan pencatatan manual.
+3. TAGIHAN LISTRIK PJU: monitoring tagihan listrik PJU seluruh DKI.
+4. SIMANIS: permohonan izin penempatan jaringan utilitas (IPPJU).
+5. JAKI & CRM: pengaduan digital terintegrasi dari masyarakat.
 
---- GUDANG/DEPO PJU ---
-- Jakarta Pusat: Danau Sunter Selatan, Blok B Kantor Walikota Jakarta Pusat
-- Jakarta Utara: Jl. Kepu, Pegangsaan Dua
-- Jakarta Barat: Jl. Meruya Utara
-- Jakarta Timur: PIK Penggilingan
+--- GUDANG PJU ---
+Jakarta Pusat: Danau Sunter Selatan, Blok B Kantor Walikota Jakpus
+Jakarta Utara: Jl. Kepu, Pegangsaan Dua
+Jakarta Barat: Jl. Meruya Utara
+Jakarta Timur: PIK Penggilingan
 
---- TUGAS & FUNGSI TERKAIT PJU ---
-- Perencanaan, pembangunan, peningkatan, pemeliharaan, dan pemantauan penerangan jalan umum
-- Penelitian dan pengembangan di bidang penerangan jalan umum
-- Pemantauan dan evaluasi ketersediaan dan kelaikan PJU
-- Pemberian dukungan teknis kepada masyarakat terkait PJU
-
---- CARA PENGADUAN / KONTAK ---
-Pengaduan terkait PJU (lampu mati, kerusakan, dll) dapat dilakukan melalui:
-- Aplikasi JAKI (Jakarta Kini) — tersedia di smartphone
-- Sistem CRM (Citizen Relation Management) Pemerintah Provinsi DKI Jakarta
-- Suku Dinas Bina Marga di masing-masing wilayah kota administrasi
+--- PENGADUAN / KONTAK ---
+- Aplikasi JAKI (Jakarta Kini) di smartphone
+- Sistem CRM Pemerintah Provinsi DKI Jakarta
+- Suku Dinas Bina Marga di masing-masing wilayah
 
 === AKHIR BASIS PENGETAHUAN ===`;
 
 // ── STATE ──
 let history = [];
-let apiKey = localStorage.getItem('pju_api_key') || '';
+const WORKER_URL = 'https://pju-proxy.firdauswnn.workers.dev/chat https://pju-proxy.firdauswnn.workers.dev/'; // ← ganti dengan URL Worker kamu
 let isLoading = false;
 const STORAGE_KEY = 'pju_chat_history';
-const MAX_SAVED = 20; // max pesan yang disimpan
+const FEEDBACK_KEY = 'pju_feedback';
+const MAX_SAVED = 20;
+let feedbackData = JSON.parse(localStorage.getItem(FEEDBACK_KEY) || '{"up":0,"down":0}');
 
 // ── INIT ──
 window.onload = () => {
-  if (apiKey) {
-    document.getElementById('keyStatus').innerHTML = '<div class="key-saved">✅ API Key tersimpan — chatbot siap digunakan!</div>';
+  if (localStorage.getItem('pju_dark') === '1') {
+    document.body.classList.add('dark');
+    document.getElementById('dmBtn').textContent = '☀️ Light';
   }
   loadHistory();
 };
+
+// ── DARK MODE ──
+function toggleDark() {
+  const isDark = document.body.classList.toggle('dark');
+  document.getElementById('dmBtn').textContent = isDark ? '☀️ Light' : '🌙 Dark';
+  localStorage.setItem('pju_dark', isDark ? '1' : '0');
+}
 
 // ── TABS ──
 function switchTab(tab, btn) {
@@ -399,73 +366,72 @@ function switchTab(tab, btn) {
   btn.classList.add('active');
 }
 
-// ── API KEY ──
-function saveKey() {
-  const val = document.getElementById('apiKeyInput').value.trim();
-  if (!val.startsWith('sk-ant-')) {
-    document.getElementById('keyStatus').innerHTML = '<div style="color:#c00;font-size:12px;margin-top:4px;">⚠️ Format key tidak valid. Harus dimulai dengan sk-ant-</div>';
-    return;
-  }
-  apiKey = val;
-  localStorage.setItem('pju_api_key', val);
-  document.getElementById('keyStatus').innerHTML = '<div class="key-saved">✅ API Key tersimpan — chatbot siap digunakan!</div>';
-}
-
-// ── HISTORY (localStorage) ──
+// ── HISTORY ──
 function saveHistory() {
-  const saved = history.slice(-MAX_SAVED);
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(saved));
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(history.slice(-MAX_SAVED)));
 }
 
 function loadHistory() {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return;
-    const saved = JSON.parse(raw);
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
     if (!saved.length) return;
     history = saved;
-    // Render divider
     const box = document.getElementById('messages');
     const div = document.createElement('div');
     div.className = 'history-divider';
     div.textContent = '— Riwayat percakapan sebelumnya —';
     box.appendChild(div);
-    // Render messages
-    saved.forEach(m => appendMsgRaw(m.role, escapeHtml(m.content)));
+    saved.forEach(m => appendMsgRaw(m.role, escapeHtml(m.content), false));
     box.scrollTop = box.scrollHeight;
     document.getElementById('historyBadge').style.display = 'inline';
-  } catch(e) { /* ignore */ }
+  } catch(e) {}
 }
 
 function clearHistory() {
   if (!confirm('Hapus semua riwayat percakapan?')) return;
   localStorage.removeItem(STORAGE_KEY);
   history = [];
-  const box = document.getElementById('messages');
-  box.innerHTML = `<div class="msg"><div class="msg-av">🤖</div><div class="bubble">Halo! Saya <strong>PJU Smart Assistant</strong>, asisten AI dari Bidang Penerangan Jalan dan Sarana Umum, Dinas Bina Marga Provinsi DKI Jakarta. 👋<br><br>Saya siap membantu Anda mendapatkan informasi seputar organisasi, layanan PJU, smart lighting, dan pemeliharaan. Silakan ajukan pertanyaan Anda!</div></div>`;
+  document.getElementById('messages').innerHTML = `<div class="msg"><div class="msg-av">🤖</div><div class="bubble">Halo! Saya <strong>PJU Smart Assistant</strong>, asisten AI dari Bidang Penerangan Jalan dan Sarana Umum, Dinas Bina Marga Provinsi DKI Jakarta. 👋<br><br>Saya siap membantu Anda mendapatkan informasi seputar organisasi, layanan PJU, smart lighting, dan pemeliharaan. Silakan ajukan pertanyaan Anda!</div></div>`;
   document.getElementById('historyBadge').style.display = 'none';
 }
 
 // ── UI HELPERS ──
-function autoResize(el) { el.style.height = 'auto'; el.style.height = Math.min(el.scrollHeight, 110) + 'px'; }
-function handleKey(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } }
+function autoResize(el) { el.style.height = 'auto'; el.style.height = Math.min(el.scrollHeight,110)+'px'; }
+function handleKey(e) { if (e.key==='Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } }
 function sendQuick(text) { document.getElementById('userInput').value = text; sendMessage(); }
+function escapeHtml(t) { return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>'); }
 
-function escapeHtml(t) {
-  return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
-}
-
-function appendMsgRaw(role, html) {
+function appendMsgRaw(role, html, withFeedback = false) {
   const box = document.getElementById('messages');
   const div = document.createElement('div');
-  div.className = 'msg' + (role === 'user' ? ' user' : '');
-  const av = role === 'user' ? '👤' : '🤖';
-  div.innerHTML = `<div class="msg-av">${av}</div><div class="bubble">${html}</div>`;
+  div.className = 'msg' + (role==='user' ? ' user' : '');
+  const av = role==='user' ? '👤' : '🤖';
+
+  let feedbackHtml = '';
+  if (role === 'assistant' && withFeedback) {
+    const id = 'fb_' + Date.now();
+    feedbackHtml = `<div class="feedback-row" id="${id}">
+      <span class="fb-label">Jawaban ini membantu?</span>
+      <button class="fb-btn" onclick="vote('${id}','up')">👍</button>
+      <button class="fb-btn" onclick="vote('${id}','down')">👎</button>
+    </div>`;
+  }
+
+  div.innerHTML = `<div class="msg-av">${av}</div><div><div class="bubble">${html}</div>${feedbackHtml}</div>`;
   box.appendChild(div);
   box.scrollTop = box.scrollHeight;
 }
 
-function appendMsg(role, html) { appendMsgRaw(role, html); }
+// ── FEEDBACK ──
+function vote(id, type) {
+  const row = document.getElementById(id);
+  if (!row) return;
+  feedbackData[type]++;
+  localStorage.setItem(FEEDBACK_KEY, JSON.stringify(feedbackData));
+  const emoji = type === 'up' ? '👍' : '👎';
+  const cls = type === 'up' ? 'voted' : 'voted-no';
+  row.innerHTML = `<button class="fb-btn ${cls}" disabled>${emoji} Terima kasih!</button>`;
+}
 
 function showTyping() {
   const box = document.getElementById('messages');
@@ -477,10 +443,107 @@ function showTyping() {
 }
 function removeTyping() { const el = document.getElementById('typing'); if (el) el.remove(); }
 
-// ── SEND MESSAGE ──
+// ── EXPORT ──
+function showExportMenu() {
+  if (!history.length) { alert('Belum ada percakapan untuk diekspor.'); return; }
+  const existing = document.getElementById('exportModal');
+  if (existing) { existing.remove(); return; }
+
+  const modal = document.createElement('div');
+  modal.id = 'exportModal';
+  modal.style.cssText = `position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
+    background:var(--bg2);border:1px solid var(--border2);border-radius:14px;
+    padding:1.25rem 1.5rem;width:280px;box-shadow:0 8px 30px rgba(0,0,0,.2);z-index:999;`;
+  modal.innerHTML = `
+    <div style="font-weight:600;font-size:14px;color:var(--text);margin-bottom:.85rem">⬇ Export Percakapan</div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <button onclick="exportTxt()" style="padding:.55rem 1rem;border-radius:8px;border:1px solid var(--border2);background:var(--bg3);color:var(--text);cursor:pointer;font-family:inherit;font-size:13px;text-align:left">📄 Export sebagai TXT</button>
+      <button onclick="exportHtml()" style="padding:.55rem 1rem;border-radius:8px;border:1px solid var(--border2);background:var(--bg3);color:var(--text);cursor:pointer;font-family:inherit;font-size:13px;text-align:left">🌐 Export sebagai HTML</button>
+    </div>
+    <div style="text-align:right;margin-top:.85rem">
+      <button onclick="document.getElementById('exportModal').remove()" style="font-size:12px;color:var(--text2);background:none;border:none;cursor:pointer;font-family:inherit">Tutup</button>
+    </div>`;
+  document.body.appendChild(modal);
+
+  // close on outside click
+  setTimeout(() => {
+    document.addEventListener('click', function handler(e) {
+      if (!modal.contains(e.target)) { modal.remove(); document.removeEventListener('click', handler); }
+    });
+  }, 100);
+}
+
+function buildChatText() {
+  const now = new Date().toLocaleString('id-ID');
+  let txt = `PJU SMART ASSISTANT — Log Percakapan\n`;
+  txt += `Dinas Bina Marga Provinsi DKI Jakarta\n`;
+  txt += `Tanggal export: ${now}\n`;
+  txt += `${'─'.repeat(50)}\n\n`;
+  history.forEach(m => {
+    const label = m.role === 'user' ? '👤 PENGGUNA' : '🤖 PJU ASSISTANT';
+    txt += `${label}\n${m.content}\n\n`;
+  });
+  txt += `${'─'.repeat(50)}\n`;
+  txt += `Total pesan: ${history.length} | Feedback: 👍 ${feedbackData.up}  👎 ${feedbackData.down}\n`;
+  return txt;
+}
+
+function exportTxt() {
+  const blob = new Blob([buildChatText()], { type: 'text/plain;charset=utf-8' });
+  triggerDownload(blob, `PJU_Chat_${dateStr()}.txt`);
+  document.getElementById('exportModal')?.remove();
+}
+
+function exportHtml() {
+  const now = new Date().toLocaleString('id-ID');
+  const rows = history.map(m => {
+    const isUser = m.role === 'user';
+    const label = isUser ? '👤 Pengguna' : '🤖 PJU Assistant';
+    const bg = isUser ? '#0F6E56' : '#f4f6f8';
+    const color = isUser ? '#fff' : '#1a1a1a';
+    const align = isUser ? 'flex-end' : 'flex-start';
+    const content = m.content.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
+    return `<div style="display:flex;justify-content:${align};margin-bottom:1rem">
+      <div style="max-width:75%;background:${bg};color:${color};border-radius:12px;padding:.65rem .95rem;font-size:14px;line-height:1.65">
+        <div style="font-size:11px;opacity:.65;margin-bottom:4px">${label}</div>
+        ${content}
+      </div></div>`;
+  }).join('');
+
+  const html = `<!DOCTYPE html><html lang="id"><head><meta charset="UTF-8">
+<title>PJU Chat Log — ${dateStr()}</title>
+<style>body{font-family:-apple-system,sans-serif;background:#f0f4f8;padding:2rem;max-width:800px;margin:0 auto}
+.header{background:linear-gradient(135deg,#0F6E56,#0C447C);color:#fff;border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1.5rem}
+.header h1{font-size:20px;margin-bottom:4px}.header p{font-size:13px;opacity:.8}
+.chat{background:#fff;border-radius:12px;padding:1.25rem;box-shadow:0 2px 8px rgba(0,0,0,.07)}
+.meta{font-size:12px;color:#888;text-align:center;margin-top:1rem;border-top:1px solid #eee;padding-top:.75rem}</style>
+</head><body>
+<div class="header"><h1>🤖 PJU Smart Assistant</h1>
+<p>Dinas Bina Marga Provinsi DKI Jakarta · Log Percakapan · ${now}</p></div>
+<div class="chat">${rows}
+<div class="meta">Total pesan: ${history.length} &nbsp;|&nbsp; Feedback: 👍 ${feedbackData.up} &nbsp; 👎 ${feedbackData.down}</div>
+</div></body></html>`;
+
+  const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+  triggerDownload(blob, `PJU_Chat_${dateStr()}.html`);
+  document.getElementById('exportModal')?.remove();
+}
+
+function triggerDownload(blob, filename) {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+function dateStr() {
+  return new Date().toISOString().slice(0,10).replace(/-/g,'');
+}
+
+// ── SEND ──
 async function sendMessage() {
   if (isLoading) return;
-  if (!apiKey) { alert('Masukkan API Key terlebih dahulu di kotak setup di atas.'); return; }
   const input = document.getElementById('userInput');
   const text = input.value.trim();
   if (!text) return;
@@ -489,41 +552,29 @@ async function sendMessage() {
   document.getElementById('sendBtn').disabled = true;
   isLoading = true;
 
-  appendMsg('user', escapeHtml(text));
-  history.push({ role: 'user', content: text });
+  appendMsgRaw('user', escapeHtml(text), false);
+  history.push({ role:'user', content:text });
   showTyping();
 
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
+    const res = await fetch(WORKER_URL, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-direct-browser-access': 'true'
-      },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 1000,
-        system: SYSTEM_PROMPT,
-        messages: history
-      })
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ system: SYSTEM_PROMPT, messages: history })
     });
-
     const data = await res.json();
     removeTyping();
-
     if (data.error) {
-      appendMsg('assistant', `<span style="color:#c00;">⚠️ Error: ${escapeHtml(data.error.message)}</span>`);
+      appendMsgRaw('assistant', `<span style="color:#c00">⚠️ Error: ${escapeHtml(data.error.message)}</span>`, false);
     } else {
       const reply = data.content?.[0]?.text || 'Maaf, terjadi kesalahan.';
-      history.push({ role: 'assistant', content: reply });
-      appendMsg('assistant', escapeHtml(reply));
+      history.push({ role:'assistant', content:reply });
+      appendMsgRaw('assistant', escapeHtml(reply), true);
       saveHistory();
     }
-  } catch (err) {
+  } catch(err) {
     removeTyping();
-    appendMsg('assistant', '<span style="color:#c00;">⚠️ Gagal terhubung ke API. Periksa koneksi dan API key.</span>');
+    appendMsgRaw('assistant', '<span style="color:#c00">⚠️ Gagal terhubung. Periksa koneksi internet.</span>', false);
   }
 
   isLoading = false;
